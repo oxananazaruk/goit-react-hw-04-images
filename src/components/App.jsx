@@ -22,24 +22,22 @@ export const App = () => {
          return;
      };
    const onFetchPhotos = async () => { 
-     setIsLoading(true);
-     setError(false);
      const responce = await fetchPhotos(userQuery, page);
      const { hits, totalHits } = responce;
      if (hits.length === 0) {
          return toast.error("Sorry, there are no images matching your search query. Please try again.");
      };
      setImages(prevImages => ([...prevImages, ...hits]));
+     setTotalPages(Math.ceil(totalHits / 12));
 
      if (page === 1) {
          toast(`Hooray! We found ${totalHits} images.`);
-       }
-        
-     setIsLoading(false);
-     setTotalPages(Math.ceil(totalHits / 12));
+       } 
    }
 
-     try {
+   try {
+      setIsLoading(true);
+      setError(false);
       onFetchPhotos();
      } catch (error) {
        setError(true);
